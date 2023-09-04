@@ -1,9 +1,13 @@
 import { Cursor, CursorWriteError } from "@hazae41/cursor"
-import { OptionInit } from "@hazae41/option"
+import { Option, OptionInit } from "@hazae41/option"
 import { Ok, Result } from "@hazae41/result"
 import { fromBuffer } from "./buffer.js"
 
 export const global: OptionInit<Adapter> = { inner: fromBuffer() }
+
+export function get() {
+  return Option.from(global)
+}
 
 export interface Copiable extends Disposable {
   readonly bytes: Uint8Array
