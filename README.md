@@ -32,7 +32,7 @@ const base16 = Base16.fromAlocer(Alocer)
 /**
  * Set it globally (optional)
  **/
-Base16.global.inner = base16
+Base16.set(base16)
 ```
 
 ### Scure (JavaScript)
@@ -49,7 +49,7 @@ const base16 = Base16.fromScure(scure.base16)
 /**
  * Set it globally (optional)
  **/
-Base16.global.inner = base16
+Base16.set(base16)
 ```
 
 ## Usage

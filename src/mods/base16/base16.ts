@@ -1,12 +1,16 @@
 import { Cursor, CursorWriteError } from "@hazae41/cursor"
-import { Option, OptionInit } from "@hazae41/option"
+import { Option, Some } from "@hazae41/option"
 import { Ok, Result } from "@hazae41/result"
 import { fromBuffer } from "./buffer.js"
 
-export const global: OptionInit<Adapter> = { inner: fromBuffer() }
+let global: Option<Adapter> = new Some(fromBuffer())
 
 export function get() {
-  return Option.from(global)
+  return global.unwrap()
+}
+
+export function set(value?: Adapter) {
+  global = Option.wrap(value)
 }
 
 export interface Copiable extends Disposable {
