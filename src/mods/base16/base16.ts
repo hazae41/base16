@@ -51,6 +51,7 @@ export class Copied implements Copiable {
 
 export interface Adapter {
   tryEncode(bytes: Uint8Array): Result<string, Error>
-  tryDecode(text: string): Result<Copiable, Error>
+  tryPadStartAndDecode(text: string): Result<Copiable, Error>
+  tryPadEndAndDecode(text: string): Result<Copiable, Error>
 }
 

@@ -19,5 +19,13 @@ export function fromAlocer(alocer: typeof Alocer): Adapter {
     return Result.runAndDoubleWrapSync(() => alocer.base16_decode_mixed(text))
   }
 
-  return { tryEncode, tryDecode }
+  function tryPadStartAndDecode(text: string) {
+    return tryDecode(text.length % 2 ? "0" + text : text)
+  }
+
+  function tryPadEndAndDecode(text: string) {
+    return tryDecode(text.length % 2 ? text + "0" : text)
+  }
+
+  return { tryEncode, tryPadStartAndDecode, tryPadEndAndDecode }
 }

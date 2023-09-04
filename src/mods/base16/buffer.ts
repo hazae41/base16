@@ -13,5 +13,13 @@ export function fromBuffer(): Adapter {
     return Result.runAndDoubleWrapSync(() => Bytes.fromView(Buffer.from(text, "hex"))).mapSync(Copied.new)
   }
 
-  return { tryEncode, tryDecode }
+  function tryPadStartAndDecode(text: string) {
+    return tryDecode(text.length % 2 ? "0" + text : text)
+  }
+
+  function tryPadEndAndDecode(text: string) {
+    return tryDecode(text.length % 2 ? text + "0" : text)
+  }
+
+  return { tryEncode, tryPadStartAndDecode, tryPadEndAndDecode }
 }

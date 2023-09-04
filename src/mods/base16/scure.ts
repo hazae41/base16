@@ -19,5 +19,13 @@ export function fromScure(scure: typeof base16): Adapter {
     return Result.runAndDoubleWrapSync(() => scure.decode(text)).mapSync(Copied.new)
   }
 
-  return { tryEncode, tryDecode }
+  function tryPadStartAndDecode(text: string) {
+    return tryDecode(text.length % 2 ? "0" + text : text)
+  }
+
+  function tryPadEndAndDecode(text: string) {
+    return tryDecode(text.length % 2 ? text + "0" : text)
+  }
+
+  return { tryEncode, tryPadStartAndDecode, tryPadEndAndDecode }
 }
