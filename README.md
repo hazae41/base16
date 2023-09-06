@@ -23,10 +23,6 @@ import { Base16 } from "@hazae41/base16"
 import { Alocer } from "@hazae41/alocer"
 
 await Alocer.initBundledOnce()
-
-/**
- * Create an instance from Alocer
- **/
 const base16 = Base16.fromAlocer(Alocer)
 
 /**
@@ -41,9 +37,6 @@ Base16.set(base16)
 import { Base16 } from "@hazae41/base16"
 import * as scure from "@scure/base"
 
-/**
- * Create an instance from Scure
- **/
 const base16 = Base16.fromScure(scure.base16)
 
 /**
