@@ -54,5 +54,5 @@ Base16.set(Base16.fromBufferOrScure())
 
 ```tsx
 const encoded: string = Base16.get().tryEncode(new Uint8Array([1,2,3,4,5])).unwrap()
-const decoded: Uint8Array = Base16.get().tryDecode(encoded).unwrap().copy()
+const decoded: Uint8Array = Base16.get().tryDecode(encoded).unwrap().copyAndDispose()
 ```
