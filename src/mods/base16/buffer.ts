@@ -1,7 +1,7 @@
 import { Result } from "@hazae41/result"
 import { Buffers } from "libs/buffers/buffers.js"
 import { Bytes } from "libs/bytes/bytes.js"
-import { Adapter, Copied } from "./base16.js"
+import { Adapter, Copied } from "./adapter.js"
 import { DecodingError, EncodingError } from "./errors.js"
 
 export function fromBuffer(): Adapter {

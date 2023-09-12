@@ -1,4 +1,4 @@
-export type CodingError =
+export type AnyError =
   | EncodingError
   | DecodingError
 
@@ -6,7 +6,7 @@ export class EncodingError extends Error {
   readonly #class = DecodingError
   readonly name = this.#class.name
 
-  constructor(options: ErrorOptions) {
+  constructor(options?: ErrorOptions) {
     super(`Could not encode`, options)
   }
 
@@ -20,7 +20,7 @@ export class DecodingError extends Error {
   readonly #class = DecodingError
   readonly name = this.#class.name
 
-  constructor(options: ErrorOptions) {
+  constructor(options?: ErrorOptions) {
     super(`Could not decode`, options)
   }
 

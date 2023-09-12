@@ -1,23 +1,24 @@
-import type { Alocer } from "@hazae41/alocer"
+import { Alocer } from "@hazae41/alocer"
 import { Result } from "@hazae41/result"
-import { Adapter } from "./base16.js"
+import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
 import { DecodingError, EncodingError } from "./errors.js"
 
-export function fromBufferOrAlocer(alocer: typeof Alocer) {
+export async function fromBufferOrAlocer() {
   if ("process" in globalThis)
     return fromBuffer()
-  return fromAlocer(alocer)
+  return await fromAlocer()
 }
 
-export function fromAlocer(alocer: typeof Alocer): Adapter {
+export async function fromAlocer(): Promise<Adapter> {
+  await Alocer.initBundledOnce()
 
   function tryEncode(bytes: Uint8Array) {
-    return Result.runAndWrapSync(() => alocer.base16_encode_lower(bytes)).mapErrSync(EncodingError.from)
+    return Result.runAndWrapSync(() => Alocer.base16_encode_lower(bytes)).mapErrSync(EncodingError.from)
   }
 
   function tryDecode(text: string) {
-    return Result.runAndWrapSync(() => alocer.base16_decode_mixed(text)).mapErrSync(DecodingError.from)
+    return Result.runAndWrapSync(() => Alocer.base16_decode_mixed(text)).mapErrSync(DecodingError.from)
   }
 
   function tryPadStartAndDecode(text: string) {

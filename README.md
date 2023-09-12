@@ -16,33 +16,36 @@ npm i @hazae41/base16
 
 ## Getting started
 
-### Alocer (WebAssembly)
+### Buffer (NodeJS)
 
 ```typescript
 import { Base16 } from "@hazae41/base16"
-import { Alocer } from "@hazae41/alocer"
 
-await Alocer.initBundledOnce()
-const base16 = Base16.fromAlocer(Alocer)
+Base16.set(Base16.fromBuffer())
+```
 
-/**
- * Set it globally (optional)
- **/
-Base16.set(base16)
+### Alocer (WebAssembly)
+
+```bash
+npm i @hazae41/alocer
+```
+
+```typescript
+import { Base16 } from "@hazae41/base16"
+
+Base16.set(await Base16.fromBufferOrAlocer())
 ```
 
 ### Scure (JavaScript)
 
+```bash
+npm i @scure/base
+```
+
 ```typescript
 import { Base16 } from "@hazae41/base16"
-import * as scure from "@scure/base"
 
-const base16 = Base16.fromScure(scure.base16)
-
-/**
- * Set it globally (optional)
- **/
-Base16.set(base16)
+Base16.set(Base16.fromBufferOrScure())
 ```
 
 ## Usage
@@ -50,6 +53,6 @@ Base16.set(base16)
 ### Direct
 
 ```tsx
-const encoded: string = base16.tryEncode(new Uint8Array([1,2,3,4,5])).unwrap()
-const decoded: Uint8Array = base16.tryDecode(encoded).unwrap().copy()
+const encoded: string = Base16.get().tryEncode(new Uint8Array([1,2,3,4,5])).unwrap()
+const decoded: Uint8Array = Base16.get().tryDecode(encoded).unwrap().copy()
 ```
