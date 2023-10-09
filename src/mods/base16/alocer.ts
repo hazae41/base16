@@ -1,4 +1,5 @@
 import { Alocer } from "@hazae41/alocer"
+import { Box, Copiable } from "@hazae41/box"
 import { Result } from "@hazae41/result"
 import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
@@ -13,7 +14,7 @@ export async function fromBufferOrAlocer() {
 export async function fromAlocer(): Promise<Adapter> {
   await Alocer.initBundledOnce()
 
-  function tryEncode(bytes: Uint8Array) {
+  function tryEncode(bytes: Box<Copiable>) {
     return Result.runAndWrapSync(() => Alocer.base16_encode_lower(bytes)).mapErrSync(EncodingError.from)
   }
 
