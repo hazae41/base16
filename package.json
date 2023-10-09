@@ -49,12 +49,12 @@
     "esmodules"
   ],
   "dependencies": {
-    "@hazae41/box": "^1.0.4",
-    "@hazae41/option": "^1.0.24",
-    "@hazae41/result": "^1.1.6"
+    "@hazae41/box": "^1.0.5",
+    "@hazae41/option": "^1.0.25",
+    "@hazae41/result": "^1.1.7"
   },
   "optionalDependencies": {
-    "@hazae41/alocer": "^1.0.6",
+    "@hazae41/alocer": "^1.0.7",
     "@scure/base": "^1.1.3"
   }
 }
