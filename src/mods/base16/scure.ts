@@ -1,4 +1,4 @@
-import { Copiable, Copied } from "@hazae41/box"
+import { BytesOrCopiable, Copied } from "@hazae41/box"
 import { Result } from "@hazae41/result"
 import { base16 } from "@scure/base"
 import { Adapter } from "./adapter.js"
@@ -13,8 +13,12 @@ export function fromBufferOrScure() {
 
 export function fromScure(): Adapter {
 
-  function tryEncode(bytes: Copiable) {
-    return Result.runAndWrapSync(() => base16.encode(bytes.bytes)).mapErrSync(EncodingError.from)
+  function getBytes(bytes: BytesOrCopiable) {
+    return "bytes" in bytes ? bytes.bytes : bytes
+  }
+
+  function tryEncode(bytes: BytesOrCopiable) {
+    return Result.runAndWrapSync(() => base16.encode(getBytes(bytes))).mapErrSync(EncodingError.from)
   }
 
   function tryDecode(text: string) {

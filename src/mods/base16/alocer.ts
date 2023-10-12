@@ -1,5 +1,5 @@
 import { Alocer } from "@hazae41/alocer"
-import { Box, Copiable } from "@hazae41/box"
+import { Box, BytesOrCopiable } from "@hazae41/box"
 import { Result } from "@hazae41/result"
 import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
@@ -14,20 +14,16 @@ export async function fromBufferOrAlocer() {
 export async function fromAlocer(): Promise<Adapter> {
   await Alocer.initBundledOnce()
 
-  function getMemoryFromCopiable(copiable: Copiable) {
-    if (copiable instanceof Alocer.Memory)
-      /**
-       * Wrap the memory in an undropable box
-       */
-      return Box.greedy(copiable)
-    /**
-     * Create a memory and wrap it in a dropable box
-     */
-    return Box.new(new Alocer.Memory(copiable.bytes))
+  function getMemory(bytesOrCopiable: BytesOrCopiable) {
+    if (bytesOrCopiable instanceof Alocer.Memory)
+      return Box.greedy(bytesOrCopiable)
+    if (bytesOrCopiable instanceof Uint8Array)
+      return Box.new(new Alocer.Memory(bytesOrCopiable))
+    return Box.new(new Alocer.Memory(bytesOrCopiable.bytes))
   }
 
-  function tryEncode(bytes: Copiable) {
-    using memory = getMemoryFromCopiable(bytes)
+  function tryEncode(bytes: BytesOrCopiable) {
+    using memory = getMemory(bytes)
 
     return Result.runAndWrapSync(() => {
       return Alocer.base16_encode_lower(memory.inner)

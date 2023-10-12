@@ -1,4 +1,4 @@
-import { Copiable, Copied } from "@hazae41/box"
+import { BytesOrCopiable, Copied } from "@hazae41/box"
 import { Result } from "@hazae41/result"
 import { Buffers } from "libs/buffers/buffers.js"
 import { Bytes } from "libs/bytes/bytes.js"
@@ -7,8 +7,12 @@ import { DecodingError, EncodingError } from "./errors.js"
 
 export function fromBuffer(): Adapter {
 
-  function tryEncode(bytes: Copiable) {
-    return Result.runAndWrapSync(() => Buffers.fromView(bytes.bytes).toString("hex")).mapErrSync(EncodingError.from)
+  function getBytes(bytes: BytesOrCopiable) {
+    return "bytes" in bytes ? bytes.bytes : bytes
+  }
+
+  function tryEncode(bytes: BytesOrCopiable) {
+    return Result.runAndWrapSync(() => Buffers.fromView(getBytes(bytes)).toString("hex")).mapErrSync(EncodingError.from)
   }
 
   function tryDecode(text: string) {

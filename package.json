@@ -50,7 +50,7 @@
     "esmodules"
   ],
   "dependencies": {
-    "@hazae41/box": "^1.0.9",
+    "@hazae41/box": "^1.0.11",
     "@hazae41/option": "^1.0.26",
     "@hazae41/result": "^1.1.8"
   },
