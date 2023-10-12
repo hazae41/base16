@@ -18,11 +18,15 @@ export function fromScure(): Adapter {
   }
 
   function tryEncode(bytes: BytesOrCopiable) {
-    return Result.runAndWrapSync(() => base16.encode(getBytes(bytes))).mapErrSync(EncodingError.from)
+    return Result.runAndWrapSync(() => {
+      return base16.encode(getBytes(bytes))
+    }).mapErrSync(EncodingError.from)
   }
 
   function tryDecode(text: string) {
-    return Result.runAndWrapSync(() => base16.decode(text)).mapSync(Copied.new).mapErrSync(DecodingError.from)
+    return Result.runAndWrapSync(() => {
+      return base16.decode(text)
+    }).mapSync(Copied.new).mapErrSync(DecodingError.from)
   }
 
   function tryPadStartAndDecode(text: string) {
