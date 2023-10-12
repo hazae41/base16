@@ -14,12 +14,30 @@ export async function fromBufferOrAlocer() {
 export async function fromAlocer(): Promise<Adapter> {
   await Alocer.initBundledOnce()
 
-  function tryEncode(bytes: Box<Copiable>) {
-    return Result.runAndWrapSync(() => Alocer.base16_encode_lower(bytes)).mapErrSync(EncodingError.from)
+  function getMemoryFromCopiable(copiable: Copiable) {
+    if (copiable instanceof Alocer.Memory)
+      /**
+       * Wrap the memory in an undropable box
+       */
+      return Box.greedy(copiable)
+    /**
+     * Create a memory and wrap it in a dropable box
+     */
+    return Box.new(new Alocer.Memory(copiable.bytes))
+  }
+
+  function tryEncode(bytes: Copiable) {
+    using memory = getMemoryFromCopiable(bytes)
+
+    return Result.runAndWrapSync(() => {
+      return Alocer.base16_encode_lower(memory.inner)
+    }).mapErrSync(EncodingError.from)
   }
 
   function tryDecode(text: string) {
-    return Result.runAndWrapSync(() => Alocer.base16_decode_mixed(text)).mapErrSync(DecodingError.from)
+    return Result.runAndWrapSync(() => {
+      return Alocer.base16_decode_mixed(text)
+    }).mapErrSync(DecodingError.from)
   }
 
   function tryPadStartAndDecode(text: string) {
