@@ -12,11 +12,15 @@ export function fromBuffer(): Adapter {
   }
 
   function tryEncode(bytes: BytesOrCopiable) {
-    return Result.runAndWrapSync(() => Buffers.fromView(getBytes(bytes)).toString("hex")).mapErrSync(EncodingError.from)
+    return Result.runAndWrapSync(() => {
+      return Buffers.fromView(getBytes(bytes)).toString("hex")
+    }).mapErrSync(EncodingError.from)
   }
 
   function tryDecode(text: string) {
-    return Result.runAndWrapSync(() => Bytes.fromView(Buffer.from(text, "hex"))).mapSync(Copied.new).mapErrSync(DecodingError.from)
+    return Result.runAndWrapSync(() => {
+      return Bytes.fromView(Buffer.from(text, "hex"))
+    }).mapSync(Copied.new).mapErrSync(DecodingError.from)
   }
 
   function tryPadStartAndDecode(text: string) {
