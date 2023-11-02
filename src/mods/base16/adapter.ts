@@ -1,17 +1,19 @@
 import { BytesOrCopiable, Copiable } from "@hazae41/box"
-import { Option, Some } from "@hazae41/option"
+import { Nullable } from "@hazae41/option"
 import { Result } from "@hazae41/result"
 import { fromBuffer } from "./buffer.js"
 import { DecodingError, EncodingError } from "./errors.js"
 
-let global: Option<Adapter> = new Some(fromBuffer())
+let global: Nullable<Adapter> = fromBuffer()
 
 export function get() {
-  return global.unwrap()
+  if (global == null)
+    throw new Error("No Base16 adapter found")
+  return global
 }
 
-export function set(value?: Adapter) {
-  global = Option.wrap(value)
+export function set(value?: Nullable<Adapter>) {
+  global = value
 }
 
 export interface Adapter {
