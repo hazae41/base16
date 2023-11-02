@@ -17,25 +17,41 @@ export function fromScure(): Adapter {
     return "bytes" in bytes ? bytes.bytes : bytes
   }
 
+  function encodeOrThrow(bytes: BytesOrCopiable) {
+    return base16.encode(getBytes(bytes))
+  }
+
   function tryEncode(bytes: BytesOrCopiable) {
     return Result.runAndWrapSync(() => {
-      return base16.encode(getBytes(bytes))
+      return encodeOrThrow(bytes)
     }).mapErrSync(EncodingError.from)
+  }
+
+  function decodeOrThrow(text: string) {
+    return new Copied(base16.decode(text))
   }
 
   function tryDecode(text: string) {
     return Result.runAndWrapSync(() => {
-      return base16.decode(text)
-    }).mapSync(Copied.new).mapErrSync(DecodingError.from)
+      return decodeOrThrow(text)
+    }).mapErrSync(DecodingError.from)
+  }
+
+  function padStartAndDecodeOrThrow(text: string) {
+    return decodeOrThrow(text.length % 2 ? "0" + text : text)
   }
 
   function tryPadStartAndDecode(text: string) {
     return tryDecode(text.length % 2 ? "0" + text : text)
   }
 
+  function padEndAndDecodeOrThrow(text: string) {
+    return decodeOrThrow(text.length % 2 ? text + "0" : text)
+  }
+
   function tryPadEndAndDecode(text: string) {
     return tryDecode(text.length % 2 ? text + "0" : text)
   }
 
-  return { tryEncode, tryPadStartAndDecode, tryPadEndAndDecode }
+  return { encodeOrThrow, tryEncode, padStartAndDecodeOrThrow, tryPadStartAndDecode, padEndAndDecodeOrThrow, tryPadEndAndDecode }
 }

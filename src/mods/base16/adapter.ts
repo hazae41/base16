@@ -15,8 +15,13 @@ export function set(value?: Adapter) {
 }
 
 export interface Adapter {
+  encodeOrThrow(bytes: BytesOrCopiable): string
   tryEncode(bytes: BytesOrCopiable): Result<string, EncodingError>
+
+  padStartAndDecodeOrThrow(text: string): Copiable
   tryPadStartAndDecode(text: string): Result<Copiable, DecodingError>
+
+  padEndAndDecodeOrThrow(text: string): Copiable
   tryPadEndAndDecode(text: string): Result<Copiable, DecodingError>
 }
 

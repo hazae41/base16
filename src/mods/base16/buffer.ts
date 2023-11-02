@@ -11,25 +11,41 @@ export function fromBuffer(): Adapter {
     return "bytes" in bytes ? bytes.bytes : bytes
   }
 
+  function encodeOrThrow(bytes: BytesOrCopiable) {
+    return Buffers.fromView(getBytes(bytes)).toString("hex")
+  }
+
   function tryEncode(bytes: BytesOrCopiable) {
     return Result.runAndWrapSync(() => {
-      return Buffers.fromView(getBytes(bytes)).toString("hex")
+      return encodeOrThrow(bytes)
     }).mapErrSync(EncodingError.from)
+  }
+
+  function decodeOrThrow(text: string) {
+    return new Copied(Bytes.fromView(Buffer.from(text, "hex")))
   }
 
   function tryDecode(text: string) {
     return Result.runAndWrapSync(() => {
-      return Bytes.fromView(Buffer.from(text, "hex"))
-    }).mapSync(Copied.new).mapErrSync(DecodingError.from)
+      return decodeOrThrow(text)
+    }).mapErrSync(DecodingError.from)
+  }
+
+  function padStartAndDecodeOrThrow(text: string) {
+    return decodeOrThrow(text.length % 2 ? "0" + text : text)
   }
 
   function tryPadStartAndDecode(text: string) {
     return tryDecode(text.length % 2 ? "0" + text : text)
   }
 
+  function padEndAndDecodeOrThrow(text: string) {
+    return decodeOrThrow(text.length % 2 ? text + "0" : text)
+  }
+
   function tryPadEndAndDecode(text: string) {
     return tryDecode(text.length % 2 ? text + "0" : text)
   }
 
-  return { tryEncode, tryPadStartAndDecode, tryPadEndAndDecode }
+  return { encodeOrThrow, tryEncode, padStartAndDecodeOrThrow, tryPadStartAndDecode, padEndAndDecodeOrThrow, tryPadEndAndDecode }
 }

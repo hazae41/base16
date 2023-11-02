@@ -22,6 +22,12 @@ export async function fromAlocer(): Promise<Adapter> {
     return Box.new(new Alocer.Memory(bytesOrCopiable.bytes))
   }
 
+  function encodeOrThrow(bytes: BytesOrCopiable) {
+    using memory = getMemory(bytes)
+
+    return Alocer.base16_encode_lower(memory.inner)
+  }
+
   function tryEncode(bytes: BytesOrCopiable) {
     using memory = getMemory(bytes)
 
@@ -30,19 +36,31 @@ export async function fromAlocer(): Promise<Adapter> {
     }).mapErrSync(EncodingError.from)
   }
 
+  function decodeOrThrow(text: string) {
+    return Alocer.base16_decode_mixed(text)
+  }
+
   function tryDecode(text: string) {
     return Result.runAndWrapSync(() => {
-      return Alocer.base16_decode_mixed(text)
+      return decodeOrThrow(text)
     }).mapErrSync(DecodingError.from)
+  }
+
+  function padStartAndDecodeOrThrow(text: string) {
+    return decodeOrThrow(text.length % 2 ? "0" + text : text)
   }
 
   function tryPadStartAndDecode(text: string) {
     return tryDecode(text.length % 2 ? "0" + text : text)
   }
 
+  function padEndAndDecodeOrThrow(text: string) {
+    return decodeOrThrow(text.length % 2 ? text + "0" : text)
+  }
+
   function tryPadEndAndDecode(text: string) {
     return tryDecode(text.length % 2 ? text + "0" : text)
   }
 
-  return { tryEncode, tryPadStartAndDecode, tryPadEndAndDecode }
+  return { encodeOrThrow, tryEncode, padStartAndDecodeOrThrow, tryPadStartAndDecode, padEndAndDecodeOrThrow, tryPadEndAndDecode }
 }
