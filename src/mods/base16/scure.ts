@@ -18,7 +18,7 @@ export function fromScure(): Adapter {
   }
 
   function encodeOrThrow(bytes: BytesOrCopiable) {
-    return base16.encode(getBytes(bytes))
+    return base16.encode(getBytes(bytes)).toLowerCase()
   }
 
   function tryEncode(bytes: BytesOrCopiable) {
@@ -28,7 +28,7 @@ export function fromScure(): Adapter {
   }
 
   function decodeOrThrow(text: string) {
-    return new Copied(base16.decode(text))
+    return new Copied(base16.decode(text.toUpperCase()))
   }
 
   function tryDecode(text: string) {
