@@ -6,14 +6,14 @@ import { fromScure } from "./scure.js"
 
 test("encode and decode", async ({ message }) => {
   const scure = fromScure()
-  const encodeda = scure.tryEncode(new Uint8Array([1, 2, 3, 4, 5, 6, 7])).unwrap()
-  const decodeda = scure.tryPadStartAndDecode("1020304050607").unwrap().copyAndDispose()
+  const encodeda = scure.encodeOrThrow(new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]))
+  const decodeda = scure.padStartAndDecodeOrThrow("0123456789abcdef").copyAndDispose()
 
   console.log(encodeda, decodeda)
 
   const alocer = await fromAlocer()
-  const encodedb = alocer.tryEncode(new Uint8Array([1, 2, 3, 4, 5, 6, 7])).unwrap()
-  const decodedb = alocer.tryPadStartAndDecode("1020304050607").unwrap().copyAndDispose()
+  const encodedb = alocer.encodeOrThrow(new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]))
+  const decodedb = alocer.padStartAndDecodeOrThrow("0123456789abcdef").copyAndDispose()
 
   console.log(encodedb, decodedb)
 
