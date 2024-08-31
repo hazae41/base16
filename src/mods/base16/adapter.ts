@@ -1,29 +1,22 @@
-import { BytesOrCopiable, Copiable } from "@hazae41/box"
-import { Nullable } from "@hazae41/option"
-import { Result } from "@hazae41/result"
+import { Nullable, Option, Some } from "@hazae41/option"
+import { BytesOrCopiable, Copiable } from "libs/copiable/index.js"
 import { fromBuffer } from "./buffer.js"
-import { DecodingError, EncodingError } from "./errors.js"
 
-let global: Nullable<Adapter> = fromBuffer()
+let global: Option<Adapter> = new Some(fromBuffer())
 
 export function get() {
-  if (global == null)
-    throw new Error("No Base16 adapter found")
   return global
 }
 
-export function set(value?: Nullable<Adapter>) {
-  global = value
+export function set(value: Nullable<Adapter>) {
+  global = Option.wrap(value)
 }
 
 export interface Adapter {
   encodeOrThrow(bytes: BytesOrCopiable): string
-  tryEncode(bytes: BytesOrCopiable): Result<string, EncodingError>
 
   padStartAndDecodeOrThrow(text: string): Copiable
-  tryPadStartAndDecode(text: string): Result<Copiable, DecodingError>
 
   padEndAndDecodeOrThrow(text: string): Copiable
-  tryPadEndAndDecode(text: string): Result<Copiable, DecodingError>
 }
 
