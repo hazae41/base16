@@ -34,7 +34,9 @@ npm i @hazae41/base16.wasm
 import { Base16 } from "@hazae41/base16"
 import { Base16Wasm } from "@hazae41/base16.wasm"
 
-Base16.set(await Base16.fromBufferOrWasm(Base16Wasm))
+await Base16Wasm.initBundled()
+
+Base16.set(Base16.fromBufferOrWasm(Base16Wasm))
 ```
 
 ### Scure (JavaScript)
