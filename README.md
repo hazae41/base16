@@ -24,16 +24,17 @@ import { Base16 } from "@hazae41/base16"
 Base16.set(Base16.fromBuffer())
 ```
 
-### Alocer (WebAssembly)
+### WebAssembly
 
 ```bash
-npm i @hazae41/alocer
+npm i @hazae41/base16.wasm
 ```
 
 ```typescript
 import { Base16 } from "@hazae41/base16"
+import { Base16Wasm } from "@hazae41/base16.wasm"
 
-Base16.set(await Base16.fromBufferOrAlocer())
+Base16.set(await Base16.fromBufferOrWasm(Base16Wasm))
 ```
 
 ### Scure (JavaScript)
@@ -44,8 +45,9 @@ npm i @scure/base
 
 ```typescript
 import { Base16 } from "@hazae41/base16"
+import * as Scure from "@scure/base"
 
-Base16.set(Base16.fromBufferOrScure())
+Base16.set(Base16.fromBufferOrScure(Scure))
 ```
 
 ## Usage
@@ -53,6 +55,7 @@ Base16.set(Base16.fromBufferOrScure())
 ### Direct
 
 ```tsx
-const encoded: string = Base16.get().tryEncode(new Uint8Array([1,2,3,4,5])).unwrap()
-const decoded: Uint8Array = Base16.get().tryDecode(encoded).unwrap().copyAndDispose()
+const encoded: string = Base16.get().getOrThrow().encodeOrThrow(new Uint8Array([1,2,3,4,5]))
+using decoded: Memory = Base16.get().getOrThrow().decodeOrThrow(encoded)
+const decoded2: Uint8Array = decoded.bytes.slice()
 ```
