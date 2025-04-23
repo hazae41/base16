@@ -15,7 +15,7 @@ export function fromWasm(wasm: typeof Base16Wasm) {
 
   function getMemory(bytesOrCopiable: BytesOrCopiable) {
     if (bytesOrCopiable instanceof Memory)
-      return Box.createAsMoved(bytesOrCopiable)
+      return Box.createAsDropped(bytesOrCopiable)
     if (bytesOrCopiable instanceof Uint8Array)
       return Box.create(new Memory(bytesOrCopiable))
     return Box.create(new Memory(bytesOrCopiable.bytes))
@@ -24,7 +24,7 @@ export function fromWasm(wasm: typeof Base16Wasm) {
   function encodeOrThrow(bytes: BytesOrCopiable) {
     using memory = getMemory(bytes)
 
-    return base16_encode_lower(memory.inner)
+    return base16_encode_lower(memory.value)
   }
 
   function decodeOrThrow(text: string) {
