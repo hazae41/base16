@@ -1,4 +1,4 @@
-import * as Scure from "@scure/base"
+import type * as Scure from "@scure/base"
 import { BytesOrCopiable, Copied } from "libs/copiable/index.js"
 import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
