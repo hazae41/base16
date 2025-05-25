@@ -1,4 +1,4 @@
-import type Scure from "@scure/base"
+import * as Scure from "@scure/base"
 import { BytesOrCopiable, Copied } from "libs/copiable/index.js"
 import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
@@ -32,5 +32,5 @@ export function fromScure(scure: typeof Scure) {
     return decodeOrThrow(text.length % 2 ? text + "0" : text)
   }
 
-  return { encodeOrThrow, padStartAndDecodeOrThrow, padEndAndDecodeOrThrow } satisfies Adapter
+  return { encodeOrThrow, decodeOrThrow, padStartAndDecodeOrThrow, padEndAndDecodeOrThrow } satisfies Adapter
 }

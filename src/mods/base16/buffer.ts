@@ -25,5 +25,5 @@ export function fromBuffer() {
     return decodeOrThrow(text.length % 2 ? text + "0" : text)
   }
 
-  return { encodeOrThrow, padStartAndDecodeOrThrow, padEndAndDecodeOrThrow } satisfies Adapter
+  return { encodeOrThrow, decodeOrThrow, padStartAndDecodeOrThrow, padEndAndDecodeOrThrow } satisfies Adapter
 }

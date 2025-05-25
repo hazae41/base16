@@ -15,6 +15,8 @@ export function set(value: Nullable<Adapter>) {
 export interface Adapter {
   encodeOrThrow(bytes: BytesOrCopiable): string
 
+  decodeOrThrow(text: string): Copiable
+
   padStartAndDecodeOrThrow(text: string): Copiable
 
   padEndAndDecodeOrThrow(text: string): Copiable
