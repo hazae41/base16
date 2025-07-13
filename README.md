@@ -16,6 +16,17 @@ npm i @hazae41/base16
 
 ## Getting started
 
+### Native
+
+https://github.com/tc39/proposal-arraybuffer-base64
+
+```typescript
+import { Base16 } from "@hazae41/base16"
+
+Base16.set(Base16.fromNative())
+```
+
+
 ### Buffer (NodeJS)
 
 ```typescript
