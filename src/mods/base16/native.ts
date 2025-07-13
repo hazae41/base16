@@ -1,4 +1,5 @@
-import { BytesOrMemory, Slice } from "libs/copiable/index.js";
+import { Slice } from "@hazae41/memory";
+import { BytesOrMemory } from "libs/memory/index.js";
 import { Adapter } from "./adapter.js";
 
 declare global {
