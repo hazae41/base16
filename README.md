@@ -47,7 +47,7 @@ import { Base16Wasm } from "@hazae41/base16.wasm"
 
 await Base16Wasm.initBundled()
 
-Base16.set(Base16.fromBufferOrWasm(Base16Wasm))
+Base16.set(Base16.fromNativeOrBufferOrWasm(Base16Wasm))
 ```
 
 ### Scure (JavaScript)
@@ -60,7 +60,7 @@ npm i @scure/base
 import { Base16 } from "@hazae41/base16"
 import * as Scure from "@scure/base"
 
-Base16.set(Base16.fromBufferOrScure(Scure))
+Base16.set(Base16.fromNativeOrBufferOrScure(Scure))
 ```
 
 ## Usage
