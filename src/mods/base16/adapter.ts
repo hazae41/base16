@@ -1,8 +1,9 @@
+import { Memory } from "@hazae41/memory"
 import { Nullable, Option, Some } from "@hazae41/option"
-import { BytesOrCopiable, Copiable } from "libs/copiable/index.js"
-import { fromBuffer } from "./buffer.js"
+import { BytesOrMemory } from "libs/copiable/index.js"
+import { fromNativeOrBuffer } from "./buffer.js"
 
-let global: Option<Adapter> = new Some(fromBuffer())
+let global: Option<Adapter> = new Some(fromNativeOrBuffer())
 
 export function get() {
   return global
@@ -13,12 +14,12 @@ export function set(value: Nullable<Adapter>) {
 }
 
 export interface Adapter {
-  encodeOrThrow(bytes: BytesOrCopiable): string
+  encodeOrThrow(bytes: BytesOrMemory): string
 
-  decodeOrThrow(text: string): Copiable
+  decodeOrThrow(text: string): Memory
 
-  padStartAndDecodeOrThrow(text: string): Copiable
+  padStartAndDecodeOrThrow(text: string): Memory
 
-  padEndAndDecodeOrThrow(text: string): Copiable
+  padEndAndDecodeOrThrow(text: string): Memory
 }
 

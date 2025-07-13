@@ -1,27 +1,28 @@
-import { Buffers } from "libs/buffers/buffers.js"
-import { Bytes } from "libs/bytes/bytes.js"
-import { BytesOrMemory, Slice } from "libs/copiable/index.js"
-import { Adapter } from "./adapter.js"
-import { fromNative } from "./native.js"
+import { BytesOrMemory, Slice } from "libs/copiable/index.js";
+import { Adapter } from "./adapter.js";
 
-export function fromNativeOrBuffer() {
-  if ("fromHex" in Uint8Array)
-    return fromNative()
-  return fromBuffer()
+declare global {
+  interface Uint8Array {
+    toHex(): string;
+  }
+
+  interface Uint8ArrayConstructor {
+    fromHex(hex: string): Uint8Array;
+  }
 }
 
-export function fromBuffer() {
+export function fromNative() {
 
   function getBytes(bytes: BytesOrMemory) {
     return "bytes" in bytes ? bytes.bytes : bytes
   }
 
   function encodeOrThrow(bytes: BytesOrMemory) {
-    return Buffers.fromView(getBytes(bytes)).toString("hex")
+    return getBytes(bytes).toHex()
   }
 
   function decodeOrThrow(text: string) {
-    return new Slice(Bytes.fromView(Buffer.from(text, "hex")))
+    return new Slice(Uint8Array.fromHex(text))
   }
 
   function padStartAndDecodeOrThrow(text: string) {

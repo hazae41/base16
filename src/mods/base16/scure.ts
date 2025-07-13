@@ -1,9 +1,12 @@
 import type * as Scure from "@scure/base"
-import { BytesOrCopiable, Copied } from "libs/copiable/index.js"
+import { BytesOrMemory, Slice } from "libs/copiable/index.js"
 import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
+import { fromNative } from "./native.js"
 
-export function fromBufferOrScure(scure: typeof Scure) {
+export function fromNativeOrBufferOrScure(scure: typeof Scure) {
+  if ("fromHex" in Uint8Array)
+    return fromNative()
   if ("process" in globalThis)
     return fromBuffer()
   return fromScure(scure)
@@ -12,16 +15,16 @@ export function fromBufferOrScure(scure: typeof Scure) {
 export function fromScure(scure: typeof Scure) {
   const { base16 } = scure
 
-  function getBytes(bytes: BytesOrCopiable) {
+  function getBytes(bytes: BytesOrMemory) {
     return "bytes" in bytes ? bytes.bytes : bytes
   }
 
-  function encodeOrThrow(bytes: BytesOrCopiable) {
+  function encodeOrThrow(bytes: BytesOrMemory) {
     return base16.encode(getBytes(bytes)).toLowerCase()
   }
 
   function decodeOrThrow(text: string) {
-    return new Copied(base16.decode(text.toUpperCase()))
+    return new Slice(base16.decode(text.toUpperCase()))
   }
 
   function padStartAndDecodeOrThrow(text: string) {

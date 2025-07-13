@@ -1,10 +1,13 @@
 import type { Base16Wasm } from "@hazae41/base16.wasm"
-import { Pin, Ref } from "@hazae41/box"
-import { BytesOrCopiable } from "libs/copiable/index.js"
+import { Ref } from "@hazae41/box"
+import { BytesOrMemory } from "libs/copiable/index.js"
 import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
+import { fromNative } from "./native.js"
 
-export function fromBufferOrWasm(wasm: typeof Base16Wasm) {
+export function fromNativeOrBufferOrWasm(wasm: typeof Base16Wasm) {
+  if ("fromHex" in Uint8Array)
+    return fromNative()
   if ("process" in globalThis)
     return fromBuffer()
   return fromWasm(wasm)
@@ -13,17 +16,17 @@ export function fromBufferOrWasm(wasm: typeof Base16Wasm) {
 export function fromWasm(wasm: typeof Base16Wasm) {
   const { Memory, base16_encode_lower, base16_decode_mixed } = wasm
 
-  function getMemory(bytesOrCopiable: BytesOrCopiable) {
+  function getMemory(bytesOrCopiable: BytesOrMemory) {
     if (bytesOrCopiable instanceof Memory)
-      return new Ref(bytesOrCopiable)
+      return Ref.with(bytesOrCopiable, () => { })
 
     if (bytesOrCopiable instanceof Uint8Array)
-      return Pin.from(new Memory(bytesOrCopiable))
+      return Ref.wrap(new Memory(bytesOrCopiable))
 
-    return Pin.from(new Memory(bytesOrCopiable.bytes))
+    return Ref.wrap(new Memory(bytesOrCopiable.bytes))
   }
 
-  function encodeOrThrow(bytes: BytesOrCopiable) {
+  function encodeOrThrow(bytes: BytesOrMemory) {
     using memory = getMemory(bytes)
 
     return base16_encode_lower(memory.value)

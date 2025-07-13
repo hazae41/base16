@@ -1,17 +1,7 @@
-export type BytesOrCopiable =
+import { Memory } from "@hazae41/memory"
+
+export { Slice } from "@hazae41/memory"
+
+export type BytesOrMemory =
   | Uint8Array
-  | Copiable
-
-export interface Copiable extends Disposable {
-  readonly bytes: Uint8Array
-}
-
-export class Copied {
-
-  constructor(
-    readonly bytes: Uint8Array
-  ) { }
-
-  [Symbol.dispose]() { }
-
-}
+  | Memory
