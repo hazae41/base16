@@ -1,5 +1,4 @@
-import { Slice } from "@hazae41/memory";
-import { BytesOrMemory } from "libs/memory/index.js";
+import { BytesOrMemory, Slice } from "@hazae41/memory";
 import { Adapter } from "./adapter.js";
 
 declare global {

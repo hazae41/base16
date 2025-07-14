@@ -1,7 +1,6 @@
-import { Slice } from "@hazae41/memory"
+import { BytesOrMemory, Slice } from "@hazae41/memory"
 import { Buffers } from "libs/buffers/buffers.js"
 import { Bytes } from "libs/bytes/bytes.js"
-import { BytesOrMemory } from "libs/memory/index.js"
 import { Adapter } from "./adapter.js"
 import { fromNative } from "./native.js"
 

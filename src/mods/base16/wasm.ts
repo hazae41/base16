@@ -1,6 +1,6 @@
 import type { Base16Wasm } from "@hazae41/base16.wasm"
 import { Ref } from "@hazae41/box"
-import { BytesOrMemory } from "libs/memory/index.js"
+import { BytesOrMemory } from "@hazae41/memory"
 import { Adapter } from "./adapter.js"
 import { fromBuffer } from "./buffer.js"
 import { fromNative } from "./native.js"

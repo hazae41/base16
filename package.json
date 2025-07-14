@@ -52,7 +52,7 @@
   ],
   "dependencies": {
     "@hazae41/box": "^4.0.4",
-    "@hazae41/memory": "^1.0.7",
+    "@hazae41/memory": "^1.0.10",
     "@hazae41/option": "^1.1.4"
   }
 }
