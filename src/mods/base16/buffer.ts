@@ -1,4 +1,3 @@
-import { BytesOrMemory, Slice } from "@hazae41/memory"
 import { Buffers } from "libs/buffers/buffers.js"
 import { Bytes } from "libs/bytes/bytes.js"
 import { Adapter } from "./adapter.js"
@@ -12,16 +11,12 @@ export function fromNativeOrBuffer() {
 
 export function fromBuffer() {
 
-  function getBytes(bytes: BytesOrMemory) {
-    return "bytes" in bytes ? bytes.bytes : bytes
-  }
-
-  function encodeOrThrow(bytes: BytesOrMemory) {
-    return Buffers.fromView(getBytes(bytes)).toString("hex")
+  function encodeOrThrow(bytes: Uint8Array) {
+    return Buffers.fromView(bytes).toString("hex")
   }
 
   function decodeOrThrow(text: string) {
-    return new Slice(Bytes.fromView(Buffer.from(text, "hex")))
+    return Bytes.fromView(Buffer.from(text, "hex"))
   }
 
   function padStartAndDecodeOrThrow(text: string) {

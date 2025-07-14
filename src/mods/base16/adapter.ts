@@ -1,24 +1,29 @@
-import { BytesOrMemory, Memory } from "@hazae41/memory"
-import { Nullable, Option, Some } from "@hazae41/option"
 import { fromNativeOrBuffer } from "./buffer.js"
 
-let global: Option<Adapter> = new Some(fromNativeOrBuffer())
-
-export function get() {
-  return global
-}
-
-export function set(value: Nullable<Adapter>) {
-  global = Option.wrap(value)
-}
+const adapter = fromNativeOrBuffer()
 
 export interface Adapter {
-  encodeOrThrow(bytes: BytesOrMemory): string
+  encodeOrThrow(bytes: Uint8Array): string
 
-  decodeOrThrow(text: string): Memory
+  decodeOrThrow(text: string): Uint8Array
 
-  padStartAndDecodeOrThrow(text: string): Memory
+  padStartAndDecodeOrThrow(text: string): Uint8Array
 
-  padEndAndDecodeOrThrow(text: string): Memory
+  padEndAndDecodeOrThrow(text: string): Uint8Array
 }
 
+export function encodeOrThrow(bytes: Uint8Array): string {
+  return adapter.encodeOrThrow(bytes)
+}
+
+export function decodeOrThrow(text: string): Uint8Array {
+  return adapter.decodeOrThrow(text)
+}
+
+export function padStartAndDecodeOrThrow(text: string): Uint8Array {
+  return adapter.padStartAndDecodeOrThrow(text)
+}
+
+export function padEndAndDecodeOrThrow(text: string): Uint8Array {
+  return adapter.padEndAndDecodeOrThrow(text)
+}

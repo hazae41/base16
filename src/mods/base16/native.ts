@@ -1,4 +1,3 @@
-import { BytesOrMemory, Slice } from "@hazae41/memory";
 import { Adapter } from "./adapter.js";
 
 declare global {
@@ -13,16 +12,12 @@ declare global {
 
 export function fromNative() {
 
-  function getBytes(bytes: BytesOrMemory) {
-    return "bytes" in bytes ? bytes.bytes : bytes
-  }
-
-  function encodeOrThrow(bytes: BytesOrMemory) {
-    return getBytes(bytes).toHex()
+  function encodeOrThrow(bytes: Uint8Array) {
+    return bytes.toHex()
   }
 
   function decodeOrThrow(text: string) {
-    return new Slice(Uint8Array.fromHex(text))
+    return Uint8Array.fromHex(text)
   }
 
   function padStartAndDecodeOrThrow(text: string) {

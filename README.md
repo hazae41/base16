@@ -1,6 +1,6 @@
 # Base16
 
-Base16 adapter for WebAssembly and JS implementations
+Base16 adapter for JS implementations
 
 ```bash
 npm i @hazae41/base16
@@ -13,60 +13,14 @@ npm i @hazae41/base16
 ### Current features
 - 100% TypeScript and ESM
 - No external dependencies
-
-## Getting started
-
-### Native
-
-https://github.com/tc39/proposal-arraybuffer-base64
-
-```typescript
-import { Base16 } from "@hazae41/base16"
-
-Base16.set(Base16.fromNative())
-```
-
-
-### Buffer (NodeJS)
-
-```typescript
-import { Base16 } from "@hazae41/base16"
-
-Base16.set(Base16.fromBuffer())
-```
-
-### WebAssembly
-
-```bash
-npm i @hazae41/base16.wasm
-```
-
-```typescript
-import { Base16 } from "@hazae41/base16"
-import { Base16Wasm } from "@hazae41/base16.wasm"
-
-await Base16Wasm.initBundled()
-
-Base16.set(Base16.fromNativeOrBufferOrWasm(Base16Wasm))
-```
-
-### Scure (JavaScript)
-
-```bash
-npm i @scure/base
-```
-
-```typescript
-import { Base16 } from "@hazae41/base16"
-import * as Scure from "@scure/base"
-
-Base16.set(Base16.fromNativeOrBufferOrScure(Scure))
-```
+- Automatic implementation
 
 ## Usage
 
 ```tsx
-const encoded: string = Base16.get().getOrThrow().encodeOrThrow(new Uint8Array([1,2,3,4,5]))
-using decoded: Copiable = Base16.get().getOrThrow().decodeOrThrow(encoded)
-const decoded2: Uint8Array = decoded.bytes.slice()
+const encoded: string = Base16.encodeOrThrow(new Uint8Array([1,2,3,4,5]))
+```
+
+```tsx
+const decoded: Uint8Array = Base16.decodeOrThrow(encoded)
 ```
