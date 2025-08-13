@@ -1,3 +1,4 @@
-export * from "./adapter.js"
-export * from "./buffer.js"
-export * from "./native.js"
+export * from "./adapter/index.js"
+export * from "./buffer/index.js"
+export * from "./native/index.js"
+

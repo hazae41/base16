@@ -1,7 +1,7 @@
 import { Buffers } from "libs/buffers/buffers.js"
 import { Bytes } from "libs/bytes/bytes.js"
-import { Adapter } from "./adapter.js"
-import { fromNative } from "./native.js"
+import { Adapter } from "../adapter/index.js"
+import { fromNative } from "../native/index.js"
 
 export function fromNativeOrBuffer() {
   if ("fromHex" in Uint8Array)
